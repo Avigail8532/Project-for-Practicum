@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+#database service
+  db:
+    image: postgres:15 
+    container_name: platform_db
+    restart: always
+    environment:
+      POSTGRES_USER: DB_adimin
+      POSTGRES_PASSWORD: DB_adimin123
+      POSTGRES_DB: platform_db
+    ports:
+      - "5432:5432"
+    #שומר את ההסטוריה שלא תימחק גם אם הקונטיינר נמחק
+    volumes: 
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
