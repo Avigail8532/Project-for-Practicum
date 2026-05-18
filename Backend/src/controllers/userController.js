@@ -20,22 +20,34 @@ exports.register = async (req, res) => {
 }
 // Fetching user history
 exports.getUserHistory = async (req, res) => {
-    try {
-        const userId = req.params.userId;
-        if (!userId) {
-            return res.status(400).json({ error: 'User ID is required.' });
-        }
-        const history = await userService.fetchUserHistory(userId);
-        res.status(200).json({
-            success: true,
-            data: history
-        });
-    } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Error fetching history",
-            error: error.message
-        });
-
+  try {
+    const userId = req.params.userId;
+    if (!userId) {
+      return res.status(400).json({ error: 'User ID is required.' });
     }
+    const history = await userService.fetchUserHistory(userId);
+    res.status(200).json({
+      success: true,
+      data: history
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error fetching history",
+      error: error.message
+    });
+
+  }
+}
+// Fetching all users for admin dashboard
+exports.getAllUsersForAdmin = async (req, res) => {
+  try {
+    const users = await userService.getAllUsers(); 
+    res.status(200).json({
+      success: true,
+      data: users
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "An error occurred while fetching the admin dashboard data." });
+  }
 }

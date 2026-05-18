@@ -28,5 +28,14 @@ exports.fetchUserHistory = async (userId) => {
     });
 
 }
-
-
+// Fetching all users for admin dashboard
+exports.getAllUsers = async () => {
+    try {
+        const users = await User.findAll({
+            attributes: ['id', 'name', 'phone']
+        });
+        return users;
+    } catch (error) {
+        throw new Error('An error occurred while fetching all users.');
+    }
+};

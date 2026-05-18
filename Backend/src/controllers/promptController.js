@@ -24,14 +24,16 @@ exports.createPrompt = async (req, res) => {
     }
 }
 // Controller for fetching all history for a user with associated category and sub-category details
-exports.fetchAllHistory = async (req, res) => {
-    try {        const userId = req.params.userId;
-        const history = await promptService.getAllhistory(userId);
-        res.status(200).json(history);
-    }
-    catch (error) {
-        res.status(500).json({ error: "An error occurred while fetching user history." });
-    }}
+// exports.fetchAllHistory = async (req, res) => {
+//     try {
+//         const userId = req.params.userId;
+//         const history = await promptService.getAllhistory(userId);
+//         res.status(200).json(history);
+//     }
+//     catch (error) {
+//         res.status(500).json({ error: "An error occurred while fetching user history." });
+//     }
+// }
 // Controller for fetching a specific prompt by ID
 exports.fetchPromptById = async (req, res) => {
     try {
