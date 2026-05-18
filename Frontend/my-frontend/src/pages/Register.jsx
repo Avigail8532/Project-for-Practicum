@@ -26,7 +26,11 @@ const Register = () => {
             navigate('/UserDashboard');
         } catch (err) {
             console.error(err);
-            setError("Failed to register user.");
+            if (err.response && err.response.data && err.response.data.message) {
+                setError(err.response.data.message);
+            } else {
+                setError("שגיאת תקשורת: לא ניתן להתחבר לשרת כרגע.");
+            }
         } finally {
             setLoading(false);
         }
@@ -103,8 +107,22 @@ const Register = () => {
                     </Button>
                 </Box>
             </form>
-
-            {error && <p style={{ color: 'red', marginTop: '20px' }}>{error}</p>}
+                    {error && (
+                <Typography 
+                    variant="body1" 
+                    sx={{ 
+                        color: 'error.main', 
+                        mt: 3, 
+                        fontWeight: 'bold',
+                        backgroundColor: '#fdf2f2',
+                        p: 1.5,
+                        borderRadius: '4px',
+                        border: '1px solid #fde8e8'
+                    }}
+                >
+                    ⚠️ {error}
+                </Typography>
+            )}
         </Box>
     );
 }

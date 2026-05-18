@@ -57,7 +57,6 @@ exports.getUserById = async (req, res) => {
     // החזרת המשתמש לפרונטאנד
     return res.status(200).json(user);
   } catch (error) {
-    console.error("Error in userController.getUserById:", error);
-    return res.status(500).json({ message: "שגיאת שרת פנימית", error: error.message });
+    next(error);
   }
 };
