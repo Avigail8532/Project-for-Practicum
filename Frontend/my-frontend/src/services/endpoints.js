@@ -4,12 +4,12 @@ import apiClient from "./api";
 export const registerUser = async (name, phone) => {
     try {
         const response = await apiClient.post('/user/addUser', { name, phone });
-        return response.data.data;
+        return response.data;
     } catch (error) {
-        console.error('Error registering user:', error);
+        console.error(error);
         throw error;
     }
-}
+};
 // פונקציה לקבלת כל הקטגוריות
 export const getCategories = async () => {
     try {
@@ -52,12 +52,12 @@ export const getUserHistory = async (userId) => {
 
 // פונקציה המיועדת למסך הניהול ומחזירה את כל המשתמשים וההיסטוריה שלהם
 export const getAdminHistory = async () => {
-  try {
-    const response = await apiClient.get('/admin/users');
-    return response.data.data;
-  } catch (error) {
-    console.error('שגיאה בפונקציית getAdminHistory:', error);
-    throw error;
-  }
+    try {
+        const response = await apiClient.get('/admin/users');
+        return response.data.data;
+    } catch (error) {
+        console.error('שגיאה בפונקציית getAdminHistory:', error);
+        throw error;
+    }
 };
 
