@@ -1,6 +1,6 @@
    const categoryService = require( '../services/categoryService.js');
 // Fetching all categories
-exports.getAllCategories = async (req, res) => {
+exports.getAllCategories = async (req, res, next) => {
     try {
         const categories = await categoryService.getAllCategories();
         res.status(200).json({
@@ -8,15 +8,11 @@ exports.getAllCategories = async (req, res) => {
             data: categories
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Error fetching categories",
-            error: error.message
-        });
+        next(error);
     }
 };
  
-exports.getSubCategoriesByCategoryId = async (req, res) => {
+exports.getSubCategoriesByCategoryId = async (req, res, next) => {
     try {
         const categoryId = req.params.categoryId;
         const subCategories = await categoryService.getSubCategoriesByCategoryId(categoryId);
@@ -25,15 +21,12 @@ exports.getSubCategoriesByCategoryId = async (req, res) => {
             data: subCategories
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Error fetching subcategories",
-            error: error.message
-        });
+      
+        next(error);
     }
 };
 // Fetching subCategory by ID
-exports.getSubCategoryById = async (req, res) => {
+exports.getSubCategoryById = async (req, res, next) => {
     try {
         const subCategoryId = req.params.subCategoryId;
         const subCategory = await categoryService.getSubCategoryById(subCategoryId);
@@ -42,10 +35,6 @@ exports.getSubCategoryById = async (req, res) => {
             data: subCategory
         });
     } catch (error) {
-        res.status(500).json({
-            success: false,
-            message: "Error fetching subcategory",
-            error: error.message
-        });
+        next(error);
     }
 };

@@ -5,7 +5,7 @@ const promptService = require('../services/promptService');
 //The administrator sees the list of users and has the ability to see the history of each user.
 
 //get all users for admin dashboard
-exports.getAllUsersForAdmin = async (req, res) => {
+exports.getAllUsersForAdmin = async (req, res, next) => {
     try {
         const users = await userService.getAllUsers(); 
         res.status(200).json({
@@ -13,12 +13,12 @@ exports.getAllUsersForAdmin = async (req, res) => {
             data: users
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: "An error occurred while fetching the admin dashboard data." });
+        next(error);
     }
 };
 
 //get user history for admin dashboard
-exports.getUserHistoryForAdmin = async (req, res) => {
+exports.getUserHistoryForAdmin = async (req, res, next) => {
     const { userId } = req.params;
     try {
         const history = await promptService.fetchUserHistory(userId);
@@ -27,7 +27,7 @@ exports.getUserHistoryForAdmin = async (req, res) => {
             data: history
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: "An error occurred while fetching user history." });
+        next(error);
     }
 };
 

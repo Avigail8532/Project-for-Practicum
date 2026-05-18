@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 // app.listen(PORT, () => {
 //     console.log(`Server is running on port ${PORT}`);
 // });
+const errorHandlerMid = require('./middlewares/errorHandlerMid');
 
 const promptRoutes = require('./routes/promptRoute');
 const userRoutes = require('./routes/userRoute');
@@ -27,6 +28,8 @@ app.use('/api/user', userRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/admin', adminRoutes);
 // Error handling middleware
+app.use(errorHandlerMid);  
+
 //sync db and start
 sequelize.sync().then(() => {
     app.listen(PORT, () => {

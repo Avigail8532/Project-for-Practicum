@@ -3,7 +3,7 @@ const { User, Prompt } = require('../models');
 
 const userService = require('../services/userService');
 // Registering new users
-exports.register = async (req, res) => {
+exports.addUser = async (req, res, next) => {
   try {
     const data = req.body;
     const user = await userService.register(data);
@@ -12,15 +12,12 @@ exports.register = async (req, res) => {
       data: user
     });
   } catch (error) {
-    res.status(400).json({
-      success: false,
-      message: error.message
-    });
+    next(error);
   }
-
 }
+
 // Fetching user history
-exports.getUserHistory = async (req, res) => {
+exports.getUserHistory = async (req, res, next) => {
   try {
     const userId = req.params.userId;
     if (!userId) {
@@ -32,16 +29,12 @@ exports.getUserHistory = async (req, res) => {
       data: history
     });
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Error fetching history",
-      error: error.message
-    });
+    next(error);
 
   }
 }
 // Fetching all users for admin dashboard
-exports.getAllUsersForAdmin = async (req, res) => {
+exports.getAllUsersForAdmin = async (req, res, next) => {
   try {
     const users = await userService.getAllUsers(); 
     res.status(200).json({
@@ -49,6 +42,6 @@ exports.getAllUsersForAdmin = async (req, res) => {
       data: users
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "An error occurred while fetching the admin dashboard data." });
+    next(error);
   }
 }

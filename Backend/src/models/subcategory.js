@@ -11,10 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-        this.belongsTo(models.Category,{foreignKey:'categoryId'})
-        this.hasMany(models.Prompt,{foreignKey:'subCategoryId'})
+        this.belongsTo(models.Category,{foreignKey:'categoryId',as:'category'})
+        this.hasMany(models.Prompt,{foreignKey:'subCategoryId',as:'prompts'})
     }
   }
+
   SubCategory.init({
     name: DataTypes.STRING,
     categoryId: DataTypes.INTEGER

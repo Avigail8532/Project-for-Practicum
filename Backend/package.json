@@ -3,7 +3,8 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "openai": "^6.37.0",
+    "express-rate-limit": "^8.5.2",
+    "openai": "^6.38.0",
     "pg": "^8.20.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.8"
@@ -12,7 +13,7 @@
     "sequelize-cli": "^6.6.5"
   },
   "scripts": {
-  "start": "node src/app.js",
-  "dev": "nodemon src/app.js"
-}
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  }
 }
