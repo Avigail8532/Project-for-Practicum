@@ -5,13 +5,12 @@ const userService = require('../services/userService');
 // Registering new users
 exports.addUser = async (req, res, next) => {
   try {
-    const data = req.body;
-    const user = await userService.register(data);
-    res.status(201).json({
-      success: true,
-      data: user
-    });
+    const {name, phone }= req.body;
+    const user = await userService.register({name,phone});
+     return res.status(200).json(user);
+    
   } catch (error) {
+    console.error("Error in addUser controller:", error);
     next(error);
   }
 }

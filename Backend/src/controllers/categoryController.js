@@ -3,6 +3,7 @@
 exports.getAllCategories = async (req, res, next) => {
     try {
         const categories = await categoryService.getAllCategories();
+        
         res.status(200).json({
             success: true,
             data: categories

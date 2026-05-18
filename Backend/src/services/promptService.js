@@ -4,33 +4,48 @@ const { User, Prompt, Category, SubCategory } = require('../models');
 const aiservice = require('./aiService')
 // Creating a new lesson
 exports.createPrompt = async (promptData) => {
-    const { userId, categoryId, subCategoryId, input } = promptData;
+    // שלפנו גם את השמות הטקסטואליים שהפרונטנד שולח
+    const { userId, categoryId, subCategoryId, input, category, subCategory } = promptData;
 
-    if (!userId || !categoryId || !subCategoryId || !input) {
+    // הגנה בסיסית: וודא שיש לפחות משתמש, קטגוריה ותת-קטגוריה
+    if (!userId || (!categoryId && !category) || (!subCategoryId && !subCategory)) {
         throw new Error('All fields are required to create a prompt.');
     }
 
-    const category = await Category.findByPk(categoryId);
-    const subCategory = await SubCategory.findByPk(subCategoryId);
-    if (!category || !subCategory) {
-        throw new Error('Invalid category or sub-category ID.');
+    let categoryName = category || 'כללי';
+    let subCategoryName = subCategory || 'נושא כללי';
+
+    // אם הגיעו מזהים מספריים, נשלוף את השמות מה-DB כמו מקודם
+    if (categoryId) {
+        const catObj = await Category.findByPk(categoryId);
+        if (catObj) categoryName = catObj.name;
     }
-    const categoryName = category.name;
-    const subCategoryName = subCategory.name;
-    const aiResponse = await aiservice.generateResponse(categoryName, subCategoryName, input);
+    if (subCategoryId) {
+        const subCatObj = await SubCategory.findByPk(subCategoryId);
+        if (subCatObj) subCategoryName = subCatObj.name;
+    }
+
+    // שימוש בטקסט שהגיע מהפרונטנד או מה-DB עבור ה-input של ה-AI
+    const aiInput = input || `תסביר לי על ${subCategoryName}`;
+
+    // פנייה לשירות ה-AI
+    const aiResponse = await aiservice.generateResponse(categoryName, subCategoryName, aiInput);
     if (!aiResponse) {
         throw new Error('Failed to generate AI response.');
     }
-    // Saving the prompt and AI response to the database
+
+    // שמירה בבסיס הנתונים - עם הגנה זמנית למקרה שאין ID מספריים
     const prompt = await Prompt.create({
         userId,
-        categoryId,
-        subCategoryId,
+        categoryId: categoryId || null,     // אם אין ID בגלל הגיבוי, יישמר כ-null
+        subCategoryId: subCategoryId || null, // אם אין ID בגלל הגיבוי, יישמר כ-null
         aiResponse,
-        prompt: input,        // מכניס את הציטוט של המשתמש לשדה prompt
-        response: aiResponse  // מכניס את המחרוזת שחזרה מה-aiService לשדה response
+        prompt: aiInput,        
+        response: aiResponse  
     });
+
     return prompt;
+
 }
 // Fetching user history
 exports.fetchUserHistory = async (userId) => {

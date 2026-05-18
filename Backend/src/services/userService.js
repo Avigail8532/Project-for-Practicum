@@ -5,9 +5,10 @@ exports.register = async (data) => {
     if (!name || !phone) {
         throw new Error('Name and phone are required.');
     }
-    const existingUser = await User.findOne({ where: { phone } });
+
+    let existingUser = await User.findOne({ where: { phone } });
     if (existingUser) {
-        throw new Error('User with this phone number already exists.');
+        return existingUser;
     }
     const user = await User.create({ name: name, phone });
     return user;    
@@ -21,8 +22,8 @@ exports.fetchUserHistory = async (userId) => {
         where: { userId: userId },
         include: [
             //{model:Prompt, as: 'prompts'},
-            { model: SubCategory, attributes: ['name'] },
-            { model: Category, attributes: ['name'] }
+            { model: SubCategory, attributes: ['name'] ,as :'subCategory'},
+            { model: Category, attributes: ['name'] , as : 'category'}
         ],
         order: [['createdAt', 'DESC']]
     });
@@ -43,7 +44,7 @@ exports.getAllUsers = async () => {
 // שליפת משתמש מהדאטה-בייס לפי ה-ID שלו
 exports.getUserById = async (userId) => {
     try {
-        const user = await User.findById(userId);
+        const user = await User.findByPk(userId);
         return user;
     } catch (error) {
         throw new Error("שגיאה בשליפת המשתמש מהדאטה-בייס: " + error.message);

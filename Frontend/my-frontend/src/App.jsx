@@ -7,8 +7,8 @@ import './App.css'
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
-
+import UserDashboard from './pages/UserDashboard';
+import AdminDashboard from './pages/AdminDashboard';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -17,11 +17,9 @@ function App() {
     <>
     <BrowserRouter>
       <Routes>
-        {/* הנתיב הראשי של האתר - יציג את עמוד ההרשמה שכתבת */}
         <Route path="/" element={<Register />} />
-        
-        {/* בהמשך, כשניצור את עמוד הדשבורד, נחבר אותו כאן בצורה הזו: */}
-        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/UserDashboard" element={<UserDashboard />} />
+        <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
     </BrowserRouter>
     </>
