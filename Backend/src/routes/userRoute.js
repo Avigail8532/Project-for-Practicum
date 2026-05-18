@@ -5,7 +5,7 @@ const userController = require('../controllers/userController');
 router.post('/addUser', userController.addUser);
 router.get('/admin/users', userController.getAllUsersForAdmin);
 router.get('/users/:userId/history', userController.getUserHistory);
-
+router.get('/:id', userController.getUserById);
 module.exports = router;
 
 

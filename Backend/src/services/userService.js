@@ -39,3 +39,13 @@ exports.getAllUsers = async () => {
         throw new Error('An error occurred while fetching all users.');
     }
 };
+
+// שליפת משתמש מהדאטה-בייס לפי ה-ID שלו
+exports.getUserById = async (userId) => {
+    try {
+        const user = await User.findById(userId);
+        return user;
+    } catch (error) {
+        throw new Error("שגיאה בשליפת המשתמש מהדאטה-בייס: " + error.message);
+    }
+};
