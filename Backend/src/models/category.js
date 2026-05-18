@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.subCategory,{foreignKey:'categoryId'})
-      this.hasMany(models.prompt,{foreignKey:'categoryId'})
+      this.hasMany(models.SubCategory,{foreignKey:'categoryId'})
+      this.hasMany(models.Prompt,{foreignKey:'categoryId'})
     }
   }
   Category.init({

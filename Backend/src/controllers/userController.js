@@ -1,5 +1,6 @@
-{ User, Prompt } require('../models');
-const { cache } = require('react');
+
+const { User, Prompt } = require('../models');
+
 const userService = require('../services/userService');
 // Registering new users
 exports.register = async (req, res) => {

@@ -10,7 +10,7 @@ exports.createPrompt = async (req, res) => {
     catch (error) {
         res.status(500).json({ error: " error  while creating the prompt" });
     }
-
+}
     // Controller for fetching user history
     exports.fetchUserHistory = async (req, res) => {
         try {
@@ -22,7 +22,7 @@ exports.createPrompt = async (req, res) => {
             res.status(500).json({ error: "An error occurred while fetching user history." });
         }
     }
-}
+
 // Controller for fetching all history for a user with associated category and sub-category details
 // exports.fetchAllHistory = async (req, res) => {
 //     try {

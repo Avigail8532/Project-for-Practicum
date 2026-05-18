@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const categoryController = require('../controllers/categoryController');
-// Route to get all categories
-router.get('/categories', categoryController.getAllCategories);
-// Route to get sub-categories by category ID
-router.get('/categories/subcategories/:categoryId', categoryController.getSubCategoriesByCategoryId);
-// Route to get sub-category by ID
-router.get('/subcategories/:subCategoryId', categoryController.getSubCategoryById);
+const userController = require('../controllers/userController');
+
+router.post('/register', userController.register);
+router.get('/admin/users', userController.getAllUsersForAdmin);
+router.get('/users/:userId/history', userController.getUserHistory);
+
 module.exports = router;
+
+

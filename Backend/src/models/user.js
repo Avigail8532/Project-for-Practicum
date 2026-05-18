@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.prompt,{foreignKey:'userId'})
+      this.hasMany(models.Prompt,{foreignKey:'userId'})
     }
   }
   User.init({

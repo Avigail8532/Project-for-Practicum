@@ -11,9 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-        this.belongsTo(models.user,{foreignKey:'userId'})
-        this.belongsTo(models.category,{foreignKey:'categoryId'})
-        this.belongsTo(models.subCategory,{foreignKey:'subCategoryId'})
+        this.belongsTo(models.User,{foreignKey:'userId'})
+        this.belongsTo(models.Category,{foreignKey:'categoryId'})
+        this.belongsTo(models.SubCategory,{foreignKey:'subCategoryId'})
     }
   }
   Prompt.init({
