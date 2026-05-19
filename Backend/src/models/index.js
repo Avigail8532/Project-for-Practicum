@@ -10,12 +10,26 @@ const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
 let sequelize;
-if (config.use_env_variable) {
+if (process.env.DB_NAME) {
+  // אם אנחנו רצים בתוך דוקר, נשתמש במשתני הסביבה שהגדרנו ב-docker-compose
+  sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASSWORD,
+    {
+      host: process.env.DB_HOST || 'db',
+      port: process.env.DB_PORT || 5432,
+      dialect: 'postgres',
+      logging: false
+    }
+  );
+} else if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
+  // אם אנחנו מריצים מקומית בלי דוקר, נשתמש בקובץ ה-json הישן
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
-
+// הבלוק המתוקן:
 fs
   .readdirSync(__dirname)
   .filter(file => {
@@ -26,6 +40,7 @@ fs
       file.indexOf('.test.js') === -1
     );
   })
+  
   .forEach(file => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
     db[model.name] = model;

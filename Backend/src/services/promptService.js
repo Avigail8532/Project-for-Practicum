@@ -39,7 +39,7 @@ exports.createPrompt = async (promptData) => {
         userId,
         categoryId: categoryId || null,     // אם אין ID בגלל הגיבוי, יישמר כ-null
         subCategoryId: subCategoryId || null, // אם אין ID בגלל הגיבוי, יישמר כ-null
-        aiResponse,
+        // aiResponse,
         prompt: aiInput,        
         response: aiResponse  
     });

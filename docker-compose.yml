@@ -1,6 +1,7 @@
 version: '3.8'
+
 services:
-#database service
+  #  Database Service
   db:
     image: postgres:15 
     container_name: platform_db
@@ -8,12 +9,43 @@ services:
     environment:
       POSTGRES_USER: DB_adimin
       POSTGRES_PASSWORD: DB_adimin123
-      POSTGRES_DB: platform_db
+      POSTGRES_DB: learning_platform
     ports:
       - "5432:5432"
-    #שומר את ההסטוריה שלא תימחק גם אם הקונטיינר נמחק
     volumes: 
       - postgres_data:/var/lib/postgresql/data
 
+  # Backend Service
+  backend:
+    build: ./Backend
+    container_name: platform_backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_USER=DB_adimin
+      - DB_PASSWORD=DB_adimin123
+      - DB_HOST=db
+      - DB_NAME=learning_platform
+      - DB_PORT=5432
+    volumes:
+      - ./Backend:/app
+      - /app/node_modules
+    depends_on:
+      - db
+
+  #  Frontend Service
+  frontend:
+    build: ./Frontend/my-frontend
+    container_name: learning_platform
+    restart: always
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./Frontend/my-frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    
 volumes:
   postgres_data:
