@@ -18,7 +18,6 @@ exports.generateResponse = async (categoryName, subCategoryName, prompt) => {
         //     max_tokens: 300,
         //     temperature: 0.7
         // });
-        // שימוש ב-trim() מבטיח מחרוזת נקייה
         //return response.choices[0].message.content.trim();
     } catch (error) {
         console.error('Error generating response:', error);
