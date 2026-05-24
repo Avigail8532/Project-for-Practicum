@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/endpoints';
-import { TextField, Box, Button, CircularProgress, Typography } from '@mui/material';
+import { TextField, Box, Button, CircularProgress, Typography, ThemeProvider, createTheme } from '@mui/material';
 
 const Register = () => {
 
@@ -9,55 +9,85 @@ const Register = () => {
     const [phone, setPhone] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    // הוספת useNavigate לניווט לאחר ההרשמה 
     const navigate = useNavigate();
 
-
+    const turquoiseTheme = createTheme({
+        palette: {
+            primary: {
+                main: '#5dbfaa', // צבע הטורקיז בזמן לחיצה (פוקוס)
+            },
+        },
+        components: {
+            MuiOutlinedInput: {
+                styleOverrides: {
+                    root: {
+                        // צבע המסגרת במצב רגיל
+                        '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#a3e2d5',
+                        },
+                        // צבע המסגרת בריחוף עכבר (Hover)
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#5dbfaa',
+                        },
+                    },
+                },
+            },
+            MuiInputLabel: {
+                styleOverrides: {
+                    root: {
+                        color: '#67c4b0', // צבע הלייבל במצב רגיל
+                    },
+                },
+            },
+        },
+    });
 
     const handleSubmit = async (e) => {
-        e.preventDefault();// מניעת רענון הדף בעת שליחת הטופס
-        setLoading(true);// הצגת מצב טעינה
-        setError("");// איפוס הודעות שגיאה קודמות
+        e.preventDefault();
+        setLoading(true);
+        setError("");
 
         try {
             const userData = await registerUser(name, phone);
-            //console.log("This is what returned from registerUser:", userData);
-            localStorage.setItem('userId', userData.id); 
+            localStorage.setItem('userId', userData.id);
             navigate('/UserDashboard');
         } catch (err) {
             console.error(err);
             if (err.response && err.response.data && err.response.data.message) {
                 setError(err.response.data.message);
             } else {
-                setError("שגיאת תקשורת: לא ניתן להתחבר לשרת כרגע.");
+                setError("Communication error: Cannot connect to the server at this time.");
             }
         } finally {
             setLoading(false);
         }
     };
+
     return (
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: '80vh', 
+            minHeight: '80vh',
             p: 2,
-            textAlign: 'center'
+            textAlign: 'center',
+            position: 'relative'
         }}>
             <Typography
                 component="h1"
                 sx={{
-                    fontSize: { xs: '1.8rem', sm: '2.4rem' }, 
-                    fontWeight: 700,                         
-                    color: '#2C3E50',                      
-                    mb: 5,                                   
-                    letterSpacing: '0.5px'                   
+                    fontSize: { xs: '1.8rem', sm: '2.4rem' },
+                    fontWeight: 700,
+                    color: '#5dbfaa',
+                    mb: 5,
+                    letterSpacing: '0.5px'
                 }}
             >
-                הרשמה למערכת הלמידה
+                Register for the learning system
             </Typography>
 
+            {/* ה-form הוחזר לפעילות מלאה כדי שהטופס יישלח כראוי */}
             <form onSubmit={handleSubmit} style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 <Box sx={{
                     display: 'flex',
@@ -67,52 +97,84 @@ const Register = () => {
                     width: '100%',
                     maxWidth: 600
                 }}>
-                    <Box sx={{
-                        display: 'flex',
-                        flexDirection: { xs: 'column', sm: 'row' },
-                        gap: 2,
-                        width: '100%',
-                        justifyContent: 'center',
-                        mx: 'auto'
-                    }}>
-                        <TextField
-                            label="Name"
-                            type='text'
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                            fullWidth
-                        />
+                    
+                    {/* ה-ThemeProvider עוטף אך ורק את ה-Box של שני השדות ומחליף את הכחול בטורקיז */}
+                    <ThemeProvider theme={turquoiseTheme}>
+                        <Box sx={{
+                            display: 'flex',
+                            flexDirection: { xs: 'column', sm: 'row' },
+                            gap: 2,
+                            width: '100%',
+                            justifyContent: 'center',
+                            mx: 'auto'
+                        }}>
+                            <TextField
+                                label="Name"
+                                type='text'
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                required
+                                fullWidth
+                            />
 
-                        <TextField
-                            label="Phone"
-                            type='text'
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            required
-                            fullWidth
-                        />
-                    </Box>
+                            <TextField
+                                label="Phone"
+                                type='text'
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                                required
+                                fullWidth
+                            />
+                        </Box>
+                    </ThemeProvider>
 
-                    {/* הכפתור ממורכז מתחתיהם */}
                     <Button
                         variant="contained"
                         type="submit"
                         disabled={loading}
                         size="large"
                         startIcon={loading ? <CircularProgress size={20} color='inherit' /> : null}
-                        sx={{ px: 6, py: 1.5 }} 
+                        sx={{ 
+                            px: 6, 
+                            py: 1.5, 
+                            mt: 3,
+                            backgroundColor: "#67c4b0 !important", 
+                            '&:hover': {
+                                backgroundColor: '#4ca693 !important'
+                            }
+                        }}
                     >
                         {loading ? "Registering..." : "Register"}
                     </Button>
+
+                    <Button
+                        variant="outlined"
+                        onClick={() => navigate('/admin')}
+                        sx={{
+                            position: 'absolute',
+                            top: '20px',
+                            left: '100px',
+                            minWidth: 'auto',
+                            zIndex: 1000,
+                            color: '#f4fbfa',
+                            backgroundColor: '#326a5e',
+                            '&:hover': {
+                                borderColor: '#23463e',
+                                backgroundColor: '#23463e'
+                            }
+                        }}
+                    >
+                        Administrator login
+                    </Button>
                 </Box>
             </form>
-                    {error && (
-                <Typography 
-                    variant="body1" 
-                    sx={{ 
-                        color: 'error.main', 
-                        mt: 3, 
+
+            {error && (
+                <Typography
+                    variant="body1"
+                    sx={{
+                        color: 'error.main',
+                        mt: 3,
                         fontWeight: 'bold',
                         backgroundColor: '#fdf2f2',
                         p: 1.5,
@@ -126,6 +188,5 @@ const Register = () => {
         </Box>
     );
 }
-
 
 export default Register;

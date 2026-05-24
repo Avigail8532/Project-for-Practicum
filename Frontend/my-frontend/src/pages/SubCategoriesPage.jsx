@@ -21,7 +21,7 @@ const SubCategoriesPage = () => {
                 }
             } catch (err) {
                 console.error("Error fetching subcategories:", err);
-                setError("נכשלה טעינת תתי-הקטגוריות עבור נושא זה.");
+                setError("Failed to load subcategories for this topic.");
             } finally {
                 setLoading(false);
             }
@@ -31,19 +31,19 @@ const SubCategoriesPage = () => {
         }
     }, [id]);
 
-    if (loading) return <div style={styles.centerText}>טוען תתי-נושאים...</div>;
+    if (loading) return <div style={styles.centerText}>Loading subtopics...</div>;
     if (error) return <div style={{ color: 'red', padding: '20px' }}>{error}</div>;
 
     return (
         <div style={styles.container}>
             <button onClick={() => navigate('/dashboard')} style={styles.backButton}>
-                ⬅️ חזרה לקטגוריות ראשיות
+               ⬅️ Back to main categories
             </button>
             
-            <h2>תתי-הנושאים הזמינים עבורך:</h2>
+            <h2>Sub-topics available to you:</h2>
             
             {subCategories.length === 0 ? (
-                <p>לא נמצאו תתי-קטגוריות בקבוצה זו.</p>
+                <p>No subcategories found in this group.</p>
             ) : (
                 <div style={styles.grid}>
                     {subCategories.map((sub) => (
@@ -53,7 +53,7 @@ const SubCategoriesPage = () => {
                             onClick={() => navigate(`/lesson/${id}/${sub.id || sub._id}`)}
                         >
                             <h3>{sub.name}</h3>
-                            <p style={styles.cardFooter}>לחץ ליצירת שיעור AI מותאם 🚀</p>
+                            <p style={styles.cardFooter}>Click to create a customized AI lesson 🚀</p>
                         </div>
                     ))}
                 </div>

@@ -8,7 +8,6 @@ exports.getAllCategories = async () => {
             include: [{
                 model: db.SubCategory,
                 as: 'subCategories',
-                // אם בטבלה העמודה היא category_id, שנה את ה-foreignKey ל-'category_id'
                 foreignKey: 'categoryId' 
             }]
         });

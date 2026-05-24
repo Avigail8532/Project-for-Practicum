@@ -6,9 +6,6 @@ const {sequelize} = require('./models');
 // // Test database connection
 
 const PORT = process.env.PORT || 3000;
-// app.listen(PORT, () => {
-//     console.log(`Server is running on port ${PORT}`);
-// });
 const errorHandlerMid = require('./middlewares/errorHandlerMid');
 
 const promptRoutes = require('./routes/promptRoute');
@@ -16,11 +13,8 @@ const userRoutes = require('./routes/userRoute');
 const categoryRoutes = require('./routes/categoryRoute');
 const adminRoutes = require('./routes/adminRoute');
 
-
 // Middleware
-
 app.use(cors());
-
 app.use(express.json());
 // Routes
 app.use('/api/prompt', promptRoutes);

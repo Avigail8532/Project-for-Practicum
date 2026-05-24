@@ -1,6 +1,4 @@
 const { User, Prompt, Category, SubCategory } = require('../models');
-// const userService = require('../services/userService');
-// const promptService = require('../services/promptService');
 const aiservice = require('./aiService')
 // Creating a new lesson
 exports.createPrompt = async (promptData) => {
